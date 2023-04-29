@@ -21,7 +21,7 @@ function gameBoard () {
         const boardWithCellValues = 
             board.map(row => row.map(cell => cell.getValue()));
         console.log(boardWithCellValues);
-    }
+    };
 
     return { rows, columns, getBoard, putMarker, printBoard };
 }
@@ -44,7 +44,8 @@ function cell() {
     return { addMarker, getValue };
 }
 
-function gameController(playerOne, playerTwo) {
+function gameController(playerOne, playerTwo) 
+{
     const board = gameBoard();
 
     const players = [
@@ -65,28 +66,19 @@ function gameController(playerOne, playerTwo) {
         console.log(`${ getActivePlayer().name }'s turn`);
     };
 
-    const playRound = (row, column) => {
-        console.log(`Put ${ getActivePlayer().name }'s marker on 
-            row ${ row } and column ${ column }`);
-        
-        board.putMarker(row, column, getActivePlayer().marker);
-
-        printWin();
-        switchPlayerTurn();
-        printNewRound();
+    const checkEqual = (firstNum, secondNum, thirdNum) => {
+        let result = false;
+        if(firstNum === secondNum && secondNum === thirdNum
+            && firstNum !== 0 && secondNum !== 0 && thirdNum !== 0){
+            result = true;
+        }
+        return result;
     };
 
     const checkIfWin = () => {
         let win = false;
         const array = board.getBoard();
 
-        const checkEqual = (firstNum, secondNum, thirdNum) => {
-            if(firstNum === secondNum && secondNum === thirdNum
-                && firstNum !== 0 && secondNum !== 0 && thirdNum !== 0){
-                return true;
-            }
-            return false;
-        }
         // compare three not zero numbers 
         // win situation: row
         for (let i = 0; i < board.rows; i++){
@@ -126,10 +118,9 @@ function gameController(playerOne, playerTwo) {
             array[0][0].getValue(),
             array[1][1].getValue(),
             array[2][2].getValue());
-            if(ifEqualTwo){
-                win = true;
-                return win;
-            }
+        if(ifEqualTwo){
+            win = true;
+            return win;
         }
         console.log(win);
         return win;
@@ -150,15 +141,31 @@ function gameController(playerOne, playerTwo) {
         console.log(findMarker);
         console.log(win);
         if(win === true){
+            printNewRound();
             console.log(`${getActivePlayer().name} is the winner.`);
             return;
         }
         else if(findMarker === board.rows * board.columns){
+            printNewRound();
             console.log('Draw');
             return;
         }
+        switchPlayerTurn();
+        printNewRound();
         console.log('Still playing...')
     };
+
+    const playRound = (row, column) => {
+        console.log(`Put ${ getActivePlayer().name }'s marker on 
+            row ${ row } and column ${ column }`);
+        
+        board.putMarker(row, column, getActivePlayer().marker);
+
+        printWin();
+        // switchPlayerTurn();
+        // printNewRound();
+    };
+
     // Initial play game message
     printNewRound();
     return { getActivePlayer, playRound };
@@ -166,4 +173,3 @@ function gameController(playerOne, playerTwo) {
 
 const game = gameController('playerOne', 'playerTwo');
 
-// game();
