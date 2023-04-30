@@ -145,14 +145,13 @@ function gameController(playerOne, playerTwo)
             console.log(`${getActivePlayer().name} is the winner.`);
             return;
         }
-        else if(findMarker === board.rows * board.columns){
+        else if(findMarker === (board.rows * board.columns)){
             printNewRound();
             console.log('Draw');
             return;
         }
         switchPlayerTurn();
         printNewRound();
-        console.log('Still playing...')
     };
 
     const playRound = (row, column) => {
