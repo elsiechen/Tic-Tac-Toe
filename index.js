@@ -264,35 +264,36 @@ function screenController(playerOne, playerTwo) {
     }
 
     function aiClickEvent(e) {
-        const selectedCell = e.target.dataset.index;
-        // make sure it's valid click
-        if(!selectedCell) return;
+        clickEvent(e);
 
-        // get index of row and column
-        const subArray = selectedCell.split('-');
-        const rowIndex = subArray[0];
-        const columnIndex = subArray[1]; 
-        game.playRound(rowIndex, columnIndex);
-        
-        // ai play after 1 sec
+        // get array of available cell index
         const available = [];
-        // nodelist
-        const cellNode = boardDiv.childNodes;
-        console.log(cellNode);
-        const availableCellIndex = cellNode.filter(cell => {
-            cell.getAttribute('dataset-index') === 0
-        }).map(cell => cell.getAttribute('dataset-index'));
-        console.log(availableCellIndex);
+        const cellElements = boardDiv.children;
+        
+        for(let i=0; i<cellElements.length; i++){
+            if(cellElements[i].innerHTML === '0'){
+                const cellIndex = cellElements[i].getAttribute('data-index');
+                available.push(cellIndex);
+            }
+        }
+        // if there's no available cell for ai, stop ai from action
+        if(!available.length) return;
 
-        const randanIndex = Math.floor(Math.random() * availableCellIndex.length);
-        const randomSelectedCell = availableCellIndex[randanIndex];
+        // get random cell index for ai to play
+        const randanIndex = Math.floor(Math.random() * available.length);
+        const randomSelectedCell = available[randanIndex];
         const getArray = randomSelectedCell.split('-');
         const row = getArray[0];
         const column = getArray[1]; 
-        const aiPlay = game.playRound(row, column);
-        setTimeout(aiPlay, 1000);
+        // const aiPlay = game.playRound(row, column);
+        function aiPlay(){
+            game.playRound(row, column);
+        }
+        setTimeout(function(){
+            aiPlay();
+            updateScreen();
+        }, 1000);
 
-        updateScreen();
     }
 
     function restartEvent() {
