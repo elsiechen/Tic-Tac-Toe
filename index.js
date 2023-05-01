@@ -1,7 +1,7 @@
 function gameBoard () {
     const rows = 3;
     const columns = 3;
-    const board = [];
+    let board = [];
 
     for (let i = 0; i < rows; i++) {
         board[i] = [];
@@ -45,7 +45,9 @@ function cell() {
     return { addMarker, getValue };
 }
 
-function gameController(playerOne, playerTwo) 
+function gameController(
+    playerOne = 'playerOne', 
+    playerTwo = 'playerTwo') 
 {
     const board = gameBoard();
 
@@ -123,7 +125,6 @@ function gameController(playerOne, playerTwo)
             win = true;
             return win;
         }
-        console.log(win);
         return win;
     };
 
@@ -164,7 +165,6 @@ function gameController(playerOne, playerTwo)
         // Check if cell is occupied
         const array = board.getBoard();
         let cell = array[row][column].getValue();
-        console.log(cell);
         if(cell !== 0) return;
 
         // cell isn't occupied, put marker and print
@@ -183,10 +183,12 @@ function gameController(playerOne, playerTwo)
              getBoard: board.getBoard};
 }
 
-function screenController() {
-    const game = gameController('playerOne', 'playerTwo');
+function screenController(playerOne, playerTwo) {
+    // const board = gameBoard();
+    const game = gameController(playerOne, playerTwo);
     const playerTurnDiv = document.querySelector('.turn');
     const boardDiv = document.querySelector('.board');
+    const restartBtn = document.querySelector('.restart');
 
     const updateScreen = () => {
         // clear the board
@@ -232,6 +234,7 @@ function screenController() {
     };
 
     boardDiv.addEventListener('click', clickEvent);
+    restartBtn.addEventListener('click', restartEvent);
     // Initial render screen
     updateScreen();
 
@@ -247,9 +250,14 @@ function screenController() {
         game.playRound(rowIndex, columnIndex);
         updateScreen();
     }
+
+    function restartEvent() {
+        screenController('Ryan1', 'Rosalyn2');
+    }
+    
 }
 
-screenController();
+screenController('Ryan1', 'Rosalyn2');
 
 
 
