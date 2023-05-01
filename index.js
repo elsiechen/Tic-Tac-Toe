@@ -14,6 +14,7 @@ function gameBoard () {
     const getBoard = () => board;
 
     const putMarker = (row, column, playerMarker) => {
+        // Put marker on the empty cell
         board[row][column].addMarker(playerMarker);
     };
 
@@ -157,9 +158,15 @@ function gameController(playerOne, playerTwo)
     const playRound = (row, column) => {
         console.log(`Put ${ getActivePlayer().name }'s marker on 
             row ${ row } and column ${ column }`);
-        
-        board.putMarker(row, column, getActivePlayer().marker);
+       
+        // Check if cell is occupied
+        const array = board.getBoard();
+        let cell = array[row][column].getValue();
+        console.log(cell);
+        if(cell !== 0) return;
 
+        // cell isn't occupied, put marker and print
+        board.putMarker(row, column, getActivePlayer().marker);     
         printWin();
         // switchPlayerTurn();
         // printNewRound();
