@@ -216,11 +216,13 @@ function screenController() {
         const cellBtns = document.querySelectorAll('.cell');
         if(game.checkIfWin()) {
             playerTurnDiv.textContent = `${activePlayer.name} is the winner.`
+            playerTurnDiv.classList.add('result');
             cellBtns.forEach(btn => {
                 btn.disabled = 'true';
             });
         }else if(game.checkIfDraw()){
             playerTurnDiv.textContent = 'Draw';
+            playerTurnDiv.classList.add('result');
             cellBtns.forEach(btn => {
                 btn.disabled = 'true';
             });

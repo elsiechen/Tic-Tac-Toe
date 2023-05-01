@@ -30,3 +30,7 @@
   lightyellow;
     cursor: pointer;
 }
+
+.result {
+  color: green;
+}
