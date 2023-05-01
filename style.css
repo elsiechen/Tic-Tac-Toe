@@ -10,12 +10,11 @@
     width: 500px;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    border: 1px solid 
-  black;
+    /* border: 1px solid black; */
+    border: none;
     gap: 2px;
     padding: 2px;
-    background-color: 
-  yellow;
+    background-color: white;
   }
   
 .cell {
@@ -24,13 +23,15 @@
     align-items: center;
     text-align: center;
     font-size: 2rem;
-    border: 1px solid 
-  grey;
-    background: 
-  lightyellow;
+    border: 1px solid grey;
+    background:  rgb(87, 197, 182);
     cursor: pointer;
 }
 
 .result {
   color: green;
+}
+
+.blueCell {
+  background-color: rgb(108, 155, 207);
 }

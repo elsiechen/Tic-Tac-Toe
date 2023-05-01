@@ -191,6 +191,8 @@ function screenController(playerOne, playerTwo) {
     const playerTurnDiv = document.querySelector('.turn');
     const boardDiv = document.querySelector('.board');
     const restartBtn = document.querySelector('.restart');
+    
+    restartBtn.style.display = 'block';
 
     const updateScreen = () => {
         // clear the board
@@ -205,6 +207,8 @@ function screenController(playerOne, playerTwo) {
             row.forEach((cell, columnIndex) => {
                 const cellBtn = document.createElement('button');
                 cellBtn.classList.add('cell');
+                // change cell color for playing with ai 
+                if(playerTwo === 'AI') cellBtn.classList.add('blueCell');
 
                 // create data attribute to identify row and column
                 // important: get row index
@@ -234,9 +238,15 @@ function screenController(playerOne, playerTwo) {
             playerTurnDiv.textContent = `${ activePlayer.name }'s turn...`;
         }
     };
-
-    boardDiv.addEventListener('click', clickEvent);
-    restartBtn.addEventListener('click', restartEvent);
+    
+    if(playerTwo === 'AI') {
+        boardDiv.addEventListener('click', aiClickEvent);
+        restartBtn.addEventListener('click', aiRestartEvent);
+    } else {
+        boardDiv.addEventListener('click', clickEvent);
+        restartBtn.addEventListener('click', restartEvent);
+    }
+    
     // Initial render screen
     updateScreen();
 
@@ -253,13 +263,66 @@ function screenController(playerOne, playerTwo) {
         updateScreen();
     }
 
+    function aiClickEvent(e) {
+        const selectedCell = e.target.dataset.index;
+        // make sure it's valid click
+        if(!selectedCell) return;
+
+        // get index of row and column
+        const subArray = selectedCell.split('-');
+        const rowIndex = subArray[0];
+        const columnIndex = subArray[1]; 
+        game.playRound(rowIndex, columnIndex);
+        
+        // ai play after 1 sec
+        const available = [];
+        // nodelist
+        const cellNode = boardDiv.childNodes;
+        console.log(cellNode);
+        const availableCellIndex = cellNode.filter(cell => {
+            cell.getAttribute('dataset-index') === 0
+        }).map(cell => cell.getAttribute('dataset-index'));
+        console.log(availableCellIndex);
+
+        const randanIndex = Math.floor(Math.random() * availableCellIndex.length);
+        const randomSelectedCell = availableCellIndex[randanIndex];
+        const getArray = randomSelectedCell.split('-');
+        const row = getArray[0];
+        const column = getArray[1]; 
+        const aiPlay = game.playRound(row, column);
+        setTimeout(aiPlay, 1000);
+
+        updateScreen();
+    }
+
     function restartEvent() {
         screenController('Ryan1', 'Rosalyn2');
+    }
+
+    function aiRestartEvent() {
+        screenController('Ryan1', 'AI');
     }
     
 }
 
-screenController('Ryan1', 'Rosalyn2');
+// separate click event for ai and two players 
+const aiBtn = document.querySelector('.ai');
+const twoPlayerBtn = document.querySelector('.twoPlayer');
+const restartBtn = document.querySelector('.restart');
+
+restartBtn.style.display = 'none';
+
+aiBtn.addEventListener('click', aiScreenController)
+twoPlayerBtn.addEventListener('click', twoPlayerScreenController);
+
+function aiScreenController() {
+    screenController('Ryan1', 'AI');
+}
+
+function twoPlayerScreenController() {
+    screenController('Ryan1', 'Rosalyn2');
+}
+
 
 
 
