@@ -174,8 +174,62 @@ function gameController(playerOne, playerTwo)
 
     // Initial play game message
     printNewRound();
-    return { getActivePlayer, playRound };
+    return { getActivePlayer, 
+             playRound,
+             getBoard: board.getBoard };
 }
 
-const game = gameController('playerOne', 'playerTwo');
+function screenController() {
+    const game = gameController('playerOne', 'playerTwo');
+    const playerTurnDiv = document.querySelector('.turn');
+    const boardDiv = document.querySelector('.board');
+
+    const updateScreen = () => {
+        // clear the board
+        boardDiv.textContent = '';
+
+        // get the newest version of board and player turn
+        const board = game.getBoard();
+        const activePlayer = game.getActivePlayer();
+
+        // display player's turn
+        playerTurnDiv.textContent = `${ activePlayer.name }'s turn...`
+    
+        // render board screen
+        board.forEach(row => {
+            row.forEach((cell, columnIndex) => {
+                const cellBtn = document.createElement('button');
+                cellBtn.classList.add('cell');
+
+                // create data attribute to identify row and column
+                // important: get row index
+                const rowIndex = board.indexOf(row);
+                cellBtn.dataset.index = `${rowIndex}-${columnIndex}`;
+                cellBtn.textContent = cell.getValue();
+                boardDiv.appendChild(cellBtn);
+            })
+        })
+    };
+
+    boardDiv.addEventListener('click', clickEvent);
+    // Initial render screen
+    updateScreen();
+
+    function clickEvent(e) {
+        const selectedCell = e.target.dataset.index;
+        // make sure it's valid click
+        if(!selectedCell) return;
+
+        // get index of row and column
+        const subArray = selectedCell.split('-');
+        const rowIndex = subArray[0];
+        const columnIndex = subArray[1]; 
+        game.playRound(rowIndex, columnIndex);
+        updateScreen();
+    }
+}
+
+screenController();
+
+
 
