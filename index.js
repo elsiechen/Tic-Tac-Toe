@@ -36,7 +36,7 @@ function gameBoard () {
 //  2: Player 2's token
 
 function cell() {
-    let value = 0;
+    let value = '';
     // Add a player's marker to change the value of the cell
     const addMarker = playerMarker => {
         value = playerMarker;
@@ -57,7 +57,7 @@ function gameController(
     const board = gameBoard();
 
     const players = [
-        { name: playerOne, marker: 1 }, { name: playerTwo, marker: 2 }
+        { name: playerOne, marker: 'O' }, { name: playerTwo, marker: 'X' }
     ];
 
     let activePlayer = players[0];
@@ -77,7 +77,7 @@ function gameController(
     const checkEqual = (firstNum, secondNum, thirdNum) => {
         let result = false;
         if(firstNum === secondNum && secondNum === thirdNum
-            && firstNum !== 0 && secondNum !== 0 && thirdNum !== 0){
+            && firstNum !== '' && secondNum !== '' && thirdNum !== ''){
             result = true;
         }
         return result;
@@ -138,7 +138,7 @@ function gameController(
         let findMarker = 0;
         for (let i = 0; i < array.length; i++){
             for(let j = 0; j < array[i].length; j++){
-                if(array[i][j].getValue() !== 0) findMarker++;
+                if(array[i][j].getValue() !== '') findMarker++;
             }
         }
         if(findMarker === (board.rows * board.columns)) return true;
@@ -170,7 +170,7 @@ function gameController(
         // Check if cell is occupied
         const array = board.getBoard();
         let cell = array[row][column].getValue();
-        if(cell !== 0) return;
+        if(cell !== '') return;
 
         // cell isn't occupied, put marker and print
         board.putMarker(row, column, getActivePlayer().marker);     
@@ -271,14 +271,14 @@ function screenController(playerOne, playerTwo) {
         const cellElements = boardDiv.children;
         
         for(let i=0; i<cellElements.length; i++){
-            if(cellElements[i].innerHTML === '0'){
+            if(cellElements[i].innerHTML === ''){
                 const cellIndex = cellElements[i].getAttribute('data-index');
                 available.push(cellIndex);
             }
         }
         // if there's no available cell for ai, stop ai from action
         if(!available.length) return;
-
+        console.log(available);
         // get random cell index for ai to play
         const randanIndex = Math.floor(Math.random() * available.length);
         const randomSelectedCell = available[randanIndex];
