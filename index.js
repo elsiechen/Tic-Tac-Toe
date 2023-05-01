@@ -127,26 +127,28 @@ function gameController(playerOne, playerTwo)
         return win;
     };
 
-    const printWin = () => {
-        const win = checkIfWin();
-        // find empty cell
+    function checkIfDraw() {
         const array = board.getBoard();
-        // const findZero = array.filter(row => row.map( cell => cell === 0));
         let findMarker = 0;
         for (let i = 0; i < array.length; i++){
             for(let j = 0; j < array[i].length; j++){
-                // console.log(array[i][j].getValue());
                 if(array[i][j].getValue() !== 0) findMarker++;
             }
         }
-        console.log(findMarker);
-        console.log(win);
+        if(findMarker === (board.rows * board.columns)) return true;
+        else return false;
+    }
+
+    const printWin = () => {
+        const win = checkIfWin();
+        const draw = checkIfDraw();
+        
         if(win === true){
             printNewRound();
             console.log(`${getActivePlayer().name} is the winner.`);
             return;
         }
-        else if(findMarker === (board.rows * board.columns)){
+        else if(draw){
             printNewRound();
             console.log('Draw');
             return;
@@ -176,7 +178,9 @@ function gameController(playerOne, playerTwo)
     printNewRound();
     return { getActivePlayer, 
              playRound,
-             getBoard: board.getBoard };
+             checkIfWin,
+             checkIfDraw,
+             getBoard: board.getBoard};
 }
 
 function screenController() {
@@ -192,9 +196,6 @@ function screenController() {
         const board = game.getBoard();
         const activePlayer = game.getActivePlayer();
 
-        // display player's turn
-        playerTurnDiv.textContent = `${ activePlayer.name }'s turn...`
-    
         // render board screen
         board.forEach(row => {
             row.forEach((cell, columnIndex) => {
@@ -209,6 +210,23 @@ function screenController() {
                 boardDiv.appendChild(cellBtn);
             })
         })
+
+        // display player's turn or win or draw
+        // disable cell btns if win or draw
+        const cellBtns = document.querySelectorAll('.cell');
+        if(game.checkIfWin()) {
+            playerTurnDiv.textContent = `${activePlayer.name} is the winner.`
+            cellBtns.forEach(btn => {
+                btn.disabled = 'true';
+            });
+        }else if(game.checkIfDraw()){
+            playerTurnDiv.textContent = 'Draw';
+            cellBtns.forEach(btn => {
+                btn.disabled = 'true';
+            });
+        }else {
+            playerTurnDiv.textContent = `${ activePlayer.name }'s turn...`;
+        }
     };
 
     boardDiv.addEventListener('click', clickEvent);
