@@ -2,7 +2,9 @@ function gameBoard () {
     const rows = 3;
     const columns = 3;
     let board = [];
-
+    // Create nested array that represent the state of game board
+    // Row 0 represent the top row and
+    // column 0 represent the left-most column.
     for (let i = 0; i < rows; i++) {
         board[i] = [];
         for (let j = 0; j < columns; j++) {
@@ -35,16 +37,19 @@ function gameBoard () {
 
 function cell() {
     let value = 0;
-
+    // Add a player's marker to change the value of the cell
     const addMarker = playerMarker => {
         value = playerMarker;
     };
-
+    // Get the current value of this cell through closure
     const getValue = () => value;
 
     return { addMarker, getValue };
 }
 
+// The GameController will be responsible for controlling the 
+// flow and state of the game's turns, as well as whether
+// anybody has won the game
 function gameController(
     playerOne = 'playerOne', 
     playerTwo = 'playerTwo') 
@@ -170,8 +175,6 @@ function gameController(
         // cell isn't occupied, put marker and print
         board.putMarker(row, column, getActivePlayer().marker);     
         printWin();
-        // switchPlayerTurn();
-        // printNewRound();
     };
 
     // Initial play game message
@@ -184,7 +187,6 @@ function gameController(
 }
 
 function screenController(playerOne, playerTwo) {
-    // const board = gameBoard();
     const game = gameController(playerOne, playerTwo);
     const playerTurnDiv = document.querySelector('.turn');
     const boardDiv = document.querySelector('.board');
