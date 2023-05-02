@@ -6,8 +6,27 @@
 
 body {
   background-color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
+.container {
+  flex: auto;
+  height: 820px;
+}
+
+footer {
+  margin-top: 0.5rem;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+  font-size: medium;
+  font-weight: bolder;
+}
 .container,
 .board-container,
 .restart-container {
@@ -25,7 +44,7 @@ body {
 .title {
   font-size: 5rem;
   font-weight: bolder;
-  margin-top: 2rem;
+  /* margin-top: 1rem; */
   /* Make text gradient */
   background: linear-gradient(-90deg, #F9E090,#FF935C,#DC5353,#A72461);
   -webkit-text-fill-color: transparent;
@@ -35,7 +54,7 @@ body {
 
 button[type='button'] {
   margin: 0 1rem;
-  padding: 1rem 2rem;
+  padding: 0.5rem 2rem;
   width: 14rem;
   font-size: 1.5rem;
   font-weight: bolder;
@@ -60,13 +79,13 @@ button[type='button']:hover {
 
 .turn {
   font-size: 2rem;
-  color: #096386;
   color: white;
 }
 
 .restart {
   background-color: red; /*For browsers that do not support gradients*/
   background-image: linear-gradient(-90deg, #F9E090,#FF935C,#DC5353,#A72461);
+  margin-top: 1rem;
 }
 
 .board {
@@ -94,7 +113,7 @@ button[type='button']:hover {
 }
 
 .result {
-  color: green;
+  color: rgb(255, 132, 0);
 }
 
 .blueCell {

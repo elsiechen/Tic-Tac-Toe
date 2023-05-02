@@ -57,8 +57,8 @@ function gameController(
     const board = gameBoard();
 
     const players = [
-        { name: playerOne, marker: 'O' }, 
-        { name: playerTwo, marker: 'X' }
+        { name: playerOne, marker: 'O', img: 'donut2.png'}, 
+        { name: playerTwo, marker: 'X', img: 'fork.png'}
     ];
 
     let activePlayer = players[0];
@@ -223,6 +223,14 @@ function screenController(playerOne, playerTwo) {
                 cellBtn.dataset.index = `${rowIndex}-${columnIndex}`;
                 cellBtn.textContent = cell.getValue();
                 boardDiv.appendChild(cellBtn);
+
+                // Important: set cellBtn hover img
+                cellBtn.addEventListener('mouseover', () => {
+                    cellBtn.style.backgroundImage = `url(${activePlayer.img})`;
+                });
+                cellBtn.addEventListener('mouseout', () => {
+                    cellBtn.style.backgroundImage = '';
+                });
             })
         })
 
@@ -242,8 +250,10 @@ function screenController(playerOne, playerTwo) {
                 btn.disabled = 'true';
             });
         }else {
+            playerTurnDiv.classList.remove('result');
             playerTurnDiv.textContent = `${ activePlayer.name }'s turn...`;
         }
+        
     };
     
     if(playerTwo === 'AI') {
@@ -329,11 +339,11 @@ function screenController(playerOne, playerTwo) {
     }
 
     function restartEvent() {
-        screenController('Ryan1', 'Rosalyn2');
+        screenController('Player1', 'Player2');
     }
 
     function aiRestartEvent() {
-        screenController('Ryan1', 'AI');
+        screenController('Player', 'AI');
     }
     
 }
@@ -349,11 +359,11 @@ aiBtn.addEventListener('click', aiScreenController)
 twoPlayerBtn.addEventListener('click', twoPlayerScreenController);
 
 function aiScreenController() {
-    screenController('Ryan1', 'AI');
+    screenController('Player', 'AI');
 }
 
 function twoPlayerScreenController() {
-    screenController('Ryan1', 'Rosalyn2');
+    screenController('Player1', 'Player2');
 }
 
 
