@@ -234,7 +234,7 @@ function screenController(playerOne, playerTwo) {
             })
         })
 
-        // display player's turn or win or draw
+        // display player's turn or result(win or draw)
         // disable cell btns if win or draw
         const cellBtns = document.querySelectorAll('.cell');
         if(game.checkIfWin()) {
@@ -253,9 +253,8 @@ function screenController(playerOne, playerTwo) {
             playerTurnDiv.classList.remove('result');
             playerTurnDiv.textContent = `${ activePlayer.name }'s turn...`;
         }
-        
     };
-    
+    // add and remove event listener based on player mode
     if(playerTwo === 'AI') {
         boardDiv.addEventListener('click', aiClickEvent);
         restartBtn.addEventListener('click', aiRestartEvent);
@@ -302,8 +301,8 @@ function screenController(playerOne, playerTwo) {
             updateScreen();
         }
 
-        // Important: if successfully put marker on cell
-        // and cell is available, update screen and ai play
+        // Important: if player successfully put marker on cell
+        // and cell is still available, update screen and ai play
         if(success && (available.length !== 0)){
             aiPlayAfter();
         }
