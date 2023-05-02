@@ -9,7 +9,7 @@ This is a Tic Tac Toe game written in JavaScript you can play in your browser!
 - Features
 - Credits
 ## Demo
-Check out the [**live**]() demo.
+Check out the [**live**](https://elsiechen.github.io/Tic-Tac-Toe/) demo.
 
 ## Technologies Used
 - HTML
