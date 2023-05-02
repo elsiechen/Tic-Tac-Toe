@@ -57,7 +57,8 @@ function gameController(
     const board = gameBoard();
 
     const players = [
-        { name: playerOne, marker: 'O' }, { name: playerTwo, marker: 'X' }
+        { name: playerOne, marker: 'O' }, 
+        { name: playerTwo, marker: 'X' }
     ];
 
     let activePlayer = players[0];
@@ -87,7 +88,7 @@ function gameController(
         let win = false;
         const array = board.getBoard();
 
-        // compare three not zero numbers 
+        // compare three non zero numbers 
         // win situation: row
         for (let i = 0; i < board.rows; i++){
             let firstNum = array[i][0].getValue();
@@ -112,7 +113,7 @@ function gameController(
                 return win;
             }
         }
-        // // win situation: diagonal
+        // win situation: diagonal
         let ifEqual = checkEqual(
             array[2][0].getValue(),
             array[1][1].getValue(),
@@ -164,10 +165,13 @@ function gameController(
     };
 
     const playRound = (row, column) => {
+        // check if successfully put marker on cell
+        let success = false;
+
         console.log(`Put ${ getActivePlayer().name }'s marker on 
             row ${ row } and column ${ column }`);
        
-        // Check if cell is occupied
+        // If cell is occupied, return
         const array = board.getBoard();
         let cell = array[row][column].getValue();
         if(cell !== '') return;
@@ -175,6 +179,9 @@ function gameController(
         // cell isn't occupied, put marker and print
         board.putMarker(row, column, getActivePlayer().marker);     
         printWin();
+
+        success = true;
+        return success;
     };
 
     // Initial play game message
@@ -242,9 +249,13 @@ function screenController(playerOne, playerTwo) {
     if(playerTwo === 'AI') {
         boardDiv.addEventListener('click', aiClickEvent);
         restartBtn.addEventListener('click', aiRestartEvent);
+        boardDiv.removeEventListener('click', clickEvent);
+        restartBtn.removeEventListener('click', restartEvent);
     } else {
         boardDiv.addEventListener('click', clickEvent);
         restartBtn.addEventListener('click', restartEvent);
+        boardDiv.removeEventListener('click', aiClickEvent);
+        restartBtn.removeEventListener('click', aiRestartEvent);
     }
     
     // Initial render screen
@@ -252,6 +263,7 @@ function screenController(playerOne, playerTwo) {
 
     function clickEvent(e) {
         const selectedCell = e.target.dataset.index;
+        
         // make sure it's valid click
         if(!selectedCell) return;
 
@@ -264,36 +276,56 @@ function screenController(playerOne, playerTwo) {
     }
 
     function aiClickEvent(e) {
-        clickEvent(e);
+        const selectedCell = e.target.dataset.index;
+        // make sure it's valid click
+        if(!selectedCell) return;
 
+        // get index of row and column
+        const subArray = selectedCell.split('-');
+        const rowIndex = subArray[0];
+        const columnIndex = subArray[1]; 
+        const success = game.playRound(rowIndex, columnIndex);
+        const available = getAvailableCell();
+
+        // Update cell after successfully put marker on cell
+        if(success){
+            updateScreen();
+        }
+
+        // Important: if successfully put marker on cell
+        // and cell is available, update screen and ai play
+        if(success && (available.length !== 0)){
+            aiPlayAfter();
+        }
+    }
+
+    function getAvailableCell(){
         // get array of available cell index
         const available = [];
         const cellElements = boardDiv.children;
-        
         for(let i=0; i<cellElements.length; i++){
-            if(cellElements[i].innerHTML === ''){
-                const cellIndex = cellElements[i].getAttribute('data-index');
+            if(cellElements[i].innerHTML == ''){
+                let cellIndex = cellElements[i].getAttribute('data-index');
                 available.push(cellIndex);
             }
         }
+        return available;
+    }
+
+    function aiPlayAfter(){
+        const available = getAvailableCell();
         // if there's no available cell for ai, stop ai from action
         if(!available.length) return;
-        console.log(available);
+        
         // get random cell index for ai to play
         const randanIndex = Math.floor(Math.random() * available.length);
         const randomSelectedCell = available[randanIndex];
         const getArray = randomSelectedCell.split('-');
         const row = getArray[0];
         const column = getArray[1]; 
-        // const aiPlay = game.playRound(row, column);
-        function aiPlay(){
-            game.playRound(row, column);
-        }
-        setTimeout(function(){
-            aiPlay();
-            updateScreen();
-        }, 1000);
 
+        game.playRound(row, column);
+        updateScreen();
     }
 
     function restartEvent() {
