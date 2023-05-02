@@ -4,6 +4,71 @@
     box-sizing: border-box;
 }
 
+body {
+  background-color: black;
+}
+
+.container,
+.board-container,
+.restart-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.title {
+  font-size: 5rem;
+  font-weight: bolder;
+  margin-top: 2rem;
+  /* Make text gradient */
+  background: linear-gradient(-90deg, #F9E090,#FF935C,#DC5353,#A72461);
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  filter: drop-shadow(5px 5px 10px #666);
+}
+
+button[type='button'] {
+  margin: 0 1rem;
+  padding: 1rem 2rem;
+  width: 14rem;
+  font-size: 1.5rem;
+  font-weight: bolder;
+  border-radius: 1rem;
+  border: none;
+  color: white;
+  opacity: 0.7;
+}
+
+button[type='button']:hover {
+  cursor: pointer;
+  opacity: 1;
+}
+
+.ai {
+  background-color: rgb(108, 155, 207);
+}
+
+.twoPlayer {
+  background-color: rgb(87, 197, 182);
+}
+
+.turn {
+  font-size: 2rem;
+  color: #096386;
+  color: white;
+}
+
+.restart {
+  background-color: red; /*For browsers that do not support gradients*/
+  background-image: linear-gradient(-90deg, #F9E090,#FF935C,#DC5353,#A72461);
+}
+
 .board {
     display: grid;
     height: 500px;
@@ -14,7 +79,7 @@
     border: none;
     gap: 2px;
     padding: 2px;
-    background-color: white;
+    background-color: black;
   }
   
 .cell {
@@ -23,7 +88,7 @@
     align-items: center;
     text-align: center;
     font-size: 2rem;
-    border: 1px solid grey;
+    border: none;
     background:  rgb(87, 197, 182);
     cursor: pointer;
 }
