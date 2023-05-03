@@ -119,3 +119,21 @@ button[type='button']:hover {
 .blueCell {
   background-color: rgb(108, 155, 207);
 }
+
+/* For mobile */
+@media (max-width: 540px){
+  .title {
+    font-size: 4rem;
+  }
+
+  button[type='button']{
+    width: 8rem;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .board {
+    width: 360px;
+    height: 360px;
+  }
+}
