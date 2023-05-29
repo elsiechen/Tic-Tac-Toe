@@ -23,4 +23,4 @@ Check out the [**live**](https://elsiechen.github.io/Tic-Tac-Toe/) demo.
 
 
 ## Credits
-- The Odin Project: [Sign-Up Form](https://www.theodinproject.com/lessons/node-path-javascript-tic-tac-toe)
+- The Odin Project: [Tic-Tac-Toe](https://www.theodinproject.com/lessons/node-path-javascript-tic-tac-toe)
